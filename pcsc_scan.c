@@ -599,6 +599,11 @@ get_readers:
 	{
 		printf("%sScanning present readers...%s\n", red, color_end);
 	}
+#ifdef __APPLE__
+	/* wait a bit so that new readers are visible with SCardListReaders */
+	if (Options.pnp)
+		usleep(100000);
+#endif
 	rv = SCardListReaders(hContext, NULL, NULL, &dwReaders);
 	if (rv != SCARD_E_NO_READERS_AVAILABLE)
 		test_rv("SCardListReaders", rv, hContext);
